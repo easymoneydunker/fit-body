@@ -1,6 +1,7 @@
 package ru.easymoneydunker.model.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -22,10 +23,13 @@ public class User {
     @NotBlank(message = "Email is required")
     private String email;
     @Positive
+    @Max(value = 120, message = "Age must be less than or equal to 120")
     private int age;
-    @Min(1)
+    @Min(value = 30,  message = "Weight must be greater than or equal to 30kg")
+    @Max(value = 200, message = "Weight must be less than or equal to 200kg")
     private int weight;
-    @Min(1)
+    @Min(value = 100,  message = "Height must be greater than or equal to 100cm")
+    @Max(value = 250,  message = "Height must be less than or equal to 250cm")
     private int height;
     private int caloriesPerDay;
     @Enumerated(EnumType.STRING)
