@@ -57,12 +57,11 @@ class EatingServiceTest {
         meal.setFats(5);
         meal.setCarbohydrates(20);
         meal.setCalories(300);
-        meal.setEating(eating);
 
         List<Meal> food = new ArrayList<>(List.of(meal));
         eating.setMeals(food);
 
-        Eating savedEating = eatingService.save(eating);
+        Eating savedEating = eatingService.save(eating, user.getId());
 
         assertNotNull(savedEating.getId());
         assertEquals(eating.getMeals().get(0).getName(), savedEating.getMeals().get(0).getName());
@@ -70,9 +69,20 @@ class EatingServiceTest {
 
     @Test
     void testAddMealByName() {
+        User user = new User();
+        user.setName("Jane");
+        user.setEmail("jane.doe@example.com");
+        user.setAge(25);
+        user.setWeight(65);
+        user.setHeight(165);
+        user.setCaloriesPerDay(1800);
+        user.setGoal(Goal.MAINTAINING);
+        userRepository.save(user);
+
         Eating eating = new Eating();
         eating.setDate(LocalDate.now());
-        eating.setUserId(userRepository.findById(1L).orElseThrow().getId());
+        eating.setUserId(user.getId());
+        eatingRepository.save(eating);
 
         Meal meal = new Meal();
         meal.setName("Pancakes");
@@ -80,15 +90,10 @@ class EatingServiceTest {
         meal.setFats(5);
         meal.setCarbohydrates(20);
         meal.setCalories(300);
-        meal.setEating(eating);
 
-        eating.setMeals(new ArrayList<>(List.of(meal)));
-
-        Eating savedEating = eatingRepository.save(eating);
         mealRepository.save(meal);
 
-        Eating updatedEating = eatingService.addMealByName("Pancakes", savedEating.getId());
-
+        Eating updatedEating = eatingService.addMealByName("Pancakes", eating.getId());
         assertTrue(updatedEating.getMeals().stream().anyMatch(m -> m.getName().equals("Pancakes")));
     }
 

@@ -9,7 +9,4 @@ import java.util.Optional;
 
 public interface MealRepository extends JpaRepository<Meal, Long> {
     Optional<Meal> findByName(String name);
-
-    @Query("select m from Meal m where m.eating.id = ?1")
-    List<Meal> findByEatingId(Long eatingId);
 }

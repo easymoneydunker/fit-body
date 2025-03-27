@@ -19,8 +19,8 @@ public class EatingController {
     private final EatingService eatingService;
 
     @PostMapping
-    public ResponseEntity<Eating> createEating(@RequestBody @Valid Eating eating) {
-        Eating savedEating = eatingService.save(eating);
+    public ResponseEntity<Eating> createEating(@RequestBody @Valid Eating eating, @RequestParam("userId") @Positive Long userId) {
+        Eating savedEating = eatingService.save(eating, userId);
         return new ResponseEntity<>(savedEating, HttpStatus.CREATED);
     }
 
