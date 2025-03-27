@@ -21,6 +21,9 @@ public class EatingService {
     private final EatingRepository eatingRepository;
 
     public Eating save(Eating eating) {
+        if (eating.getDate() == null) {
+            eating.setDate(java.time.LocalDate.now());
+        }
         log.info("Saving eating: {}", eating.getId());
         Eating savedEating = eatingRepository.save(eating);
         log.info("Eating saved: {}", savedEating.getId());
