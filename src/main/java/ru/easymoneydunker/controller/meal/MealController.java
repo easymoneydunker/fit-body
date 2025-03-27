@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.easymoneydunker.model.meal.Meal;
 import ru.easymoneydunker.service.meal.MealService;
@@ -13,6 +14,7 @@ import ru.easymoneydunker.service.meal.MealService;
 @RestController
 @RequestMapping("/meals")
 @RequiredArgsConstructor
+@Validated
 public class MealController {
     private final MealService mealService;
 
@@ -23,13 +25,13 @@ public class MealController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Meal> getMealByName(@PathVariable @NotBlank String name) {
+    public ResponseEntity<Meal> getMealByName(@PathVariable("name") @NotBlank String name) {
         Meal meal = mealService.findByName(name);
         return ResponseEntity.ok(meal);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMeal(@PathVariable @Positive Long id) {
+    public ResponseEntity<Void> deleteMeal(@PathVariable("id") @Positive Long id) {
         mealService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

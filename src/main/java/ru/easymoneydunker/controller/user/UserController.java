@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.easymoneydunker.model.user.User;
 import ru.easymoneydunker.service.user.UserService;
@@ -13,6 +14,7 @@ import ru.easymoneydunker.service.user.UserService;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
     private final UserService userService;
 
@@ -23,19 +25,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable @Positive Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable("id") @Positive Long id) {
         User user = userService.findById(id);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<User> getUserByName(@PathVariable @NotBlank String name) {
+    public ResponseEntity<User> getUserByName(@PathVariable("name") @NotBlank String name) {
         User user = userService.findByName(name);
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable @Positive Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") @Positive Long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
