@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ru.easymoneydunker.model.meal.Meal;
+import ru.easymoneydunker.model.report.DailyReport;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class Eating {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "daily_report_id", insertable = false, updatable = false)
+    private DailyReport dailyReport;
+
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(

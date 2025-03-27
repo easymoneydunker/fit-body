@@ -1,4 +1,4 @@
-package ru.easymoneydunker.controller;
+package ru.easymoneydunker.controller.report;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +20,10 @@ public class ReportController {
     public ResponseEntity<DailyReport> getDailyReport(@PathVariable("userId") Long userId, @RequestParam("date") LocalDate date) {
         DailyReport report = reportService.generateDailyReport(userId, date);
         return ResponseEntity.ok(report);
+    }
+
+    @GetMapping("/journal/{userId}")
+    public ResponseEntity<?> getDailyReports(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(reportService.getDailyReportsByUserId(userId));
     }
 }

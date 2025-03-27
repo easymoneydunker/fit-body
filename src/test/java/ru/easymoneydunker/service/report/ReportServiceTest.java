@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import ru.easymoneydunker.model.calories.CaloriesCalculator;
 import ru.easymoneydunker.model.calories.Goal;
 import ru.easymoneydunker.model.eating.Eating;
 import ru.easymoneydunker.model.meal.Meal;
@@ -39,6 +40,7 @@ class ReportServiceTest {
     private UserRepository userRepository;
 
     private Long testUserId;
+    private int caloricTarget;
 
     @BeforeEach
     void setUp() {
@@ -53,8 +55,11 @@ class ReportServiceTest {
         user.setWeight(70);
         user.setHeight(175);
         user.setGoal(Goal.CUTTING);
+        caloricTarget = new CaloriesCalculator().calculate(user.getWeight(), user.getHeight(), user.getAge(), user.getGoal());
+        user.setCaloriesPerDay(caloricTarget);
         user = userRepository.save(user);
         testUserId = user.getId();
+
     }
 
     @Test
@@ -97,6 +102,7 @@ class ReportServiceTest {
         assertEquals(25, report.getTotalProteins());
         assertEquals(12, report.getTotalFats());
         assertEquals(45, report.getTotalCarbohydrates());
+        assertEquals(caloricTarget, report.getCaloricTarget());
         assertEquals(450, report.getTotalCalories());
     }
 }
